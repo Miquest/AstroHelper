@@ -14,7 +14,7 @@ def test_coordinates():
     coords.coordinates = my_coordinates
 
     coords.add_coordinate([1, 2])
-    print(coords)
+    print(coords.polar_coordinates)
 
 def load_json():
     with open("orbital_elements.json", "r") as file:

@@ -7,7 +7,7 @@ Das Repository wird nicht aktiv maintained!
 Die Dokumentationen aller enthaltenen Programme sind im "documentation" Ordner zu finden.
 Hier eine kleine Auflistung der vorhandenen Dokumente:
 
-- [Einführung in Python](./documentation/introduction.md)
+- [Einführung in die Konzepte dieser Bibliothek](./documentation/introduction.md)
 - [AstroDate](./documentation/astrodate.md)
 - [Coordinates](./documentation/coordinates.md)
 - ...

@@ -4,23 +4,14 @@ import numpy
 from astrodate import AstroDate
 from methods import Ellipse
 from coordinates import Coordinates
-
-
+from orbital_elements import OrbitalElements
+from math import pi
 
 
 def test_coordinates():
-    coords = Coordinates()
-    my_coordinates = [[1,3],[-1,3],[-1,-3],[1,-3],[-1,0]]
-    coords.coordinates = my_coordinates
-
-    coords.add_coordinate([1, 2])
+    coords = Coordinates([[1,3],[-1,3],[-1,-3],[1,-3],[-1,0]])
+    print(coords.coordinates)
     print(coords.polar_coordinates)
-
-def load_json():
-    with open("orbital_elements.json", "r") as file:
-        content = json.load(file)
-
 
 if __name__ == "__main__":
     test_coordinates()
-

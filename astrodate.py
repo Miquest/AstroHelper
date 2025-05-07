@@ -3,18 +3,46 @@ import numpy as np
 
 class AstroDate:
 
-    def __init__(self, date: str = None):
+    def __init__(self, date = None):
 
         self.datetime_obj = datetime.now()
+        self.seconds = None
+        self.minutes = None
+        self.hours = None
+        self.day = None
+        self.month = None
+        self.year = None
+        self.julian_date = None
 
         if date:
-            try:
-                self.datetime_obj = datetime.fromisoformat(date)
-            except ValueError:
-                print("Date string has to be in ISO8601 format")
+            if type(date) == str:
+                try:
+                    self.datetime_obj = datetime.fromisoformat(date)
+                except ValueError:
+                    print("Date string has to be in ISO8601 format")
+            elif type(date) == datetime:
+                self.datetime_obj = date
 
         self._set_properties_from_object()
-        self.julian_date = self.to_julian()
+        self.to_julian()
+
+    @property
+    def date(self):
+        return self.datetime_obj.isoformat()
+
+    @date.setter
+    def date(self, value):
+        if type(value) == str:
+            try:
+                self.datetime_obj = datetime.fromisoformat(value)
+            except ValueError:
+                print("Date string has to be in ISO8601 format")
+        elif type(value) == datetime:
+            self.datetime_obj = value
+
+        self._set_properties_from_object()
+        self.to_julian()
+
 
     # Define properties for further and comfortable use in class and it's entities
     def _set_properties_from_object(self) -> None:
@@ -56,15 +84,21 @@ class AstroDate:
             calc_year = self.year - 1
             calc_month = self.month + 12
 
-        self.julian_date = np.floor(365.25 * (calc_year + 4716)) + np.floor(30.6001 * (calc_month + 1)) + calc_day - 1524.5
+        b = 2-np.floor(calc_year/100)+np.floor(calc_year/400)
+
+        self.julian_date = np.floor(365.25 * (calc_year + 4716)) + np.floor(30.6001 * (calc_month + 1)) + calc_day + b - 1524.5
         return self.julian_date
+
 
     def from_julian(self, julian_date: float) -> datetime:
 
         z = np.floor(julian_date + 0.5)
         f = julian_date + 0.5 - z
 
-        b = z + 1524
+        alpha = np.floor((z - 1867216.25) / 36524.25)
+        a = z + 1 + alpha - np.floor(alpha / 4)
+
+        b = a + 1524
         c = np.floor((b-122.1)/365.25)
         d = np.floor(365.25*c)
         e = np.floor((b-d)/30.6001)
@@ -90,6 +124,7 @@ class AstroDate:
 
         self.datetime_obj = datetime.now()
         self._create_datetime_from_attributes()
+        self.julian_date = julian_date
 
         return self.datetime_obj
 
@@ -100,9 +135,9 @@ class AstroDate:
     # Add a python timedelta
     def __add__(self, other: timedelta):
         self.datetime_obj += other
-        return AstroDate(date=self.datetime_obj.isoformat())
+        return AstroDate(date=self.datetime_obj)
 
     # Subtract a python timedelta
     def __sub__(self, other: timedelta):
         self.datetime_obj -= other
-        return AstroDate(date=self.datetime_obj.isoformat())
+        return AstroDate(date=self.datetime_obj)

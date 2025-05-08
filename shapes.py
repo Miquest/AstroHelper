@@ -1,21 +1,15 @@
 import numpy as np
-from math import sqrt
+from math import sqrt, pi
 
 
 class Ellipse:
 
-    def __init__(self, a: float, b: float):
+    def __init__(self, a: float, b: float, radians: bool = False):
         self.major_axis = a
         self.minor_axis = b
-        self.epsilon = sqrt( 1 - (b / a) ** 2)
-        self.e = None
+        self.epsilon = sqrt(1 - (b / a) ** 2)
 
-    @property
-    def excentricity(self):
-        if self.e:
-            return self.e
-        else:
-            raise ValueError("Currently not available!")
+        self.radians = radians
 
     @property
     def a(self):
@@ -39,20 +33,39 @@ class Ellipse:
     def _kepler_equation(self, m: float, e: float) -> float:
         return m - e + self.epsilon * np.sin(e)
 
-    def search_exzentricity(self, value: float) -> float:
+    def excentric_anomaly(self, value: float) -> float:
 
         # Define the minimum and maximum value we could possibly have.
         # Since we measure the excentric anomaly in degrees, the maximum is
         # 360 and minimum is 0
-        upper_bound = 360
-        lower_bound = 0
+        if not self.radians:
+            value = np.deg2rad(value)
 
+        e_upper_bound = 2 * pi
+        e_lower_bound = 0 * pi
+        solved = False
 
-        return 0.0
+        while not solved:
 
+            interval = (e_lower_bound + e_upper_bound) / 2
+
+            temp_solution_lb = self._kepler_equation(value, e_lower_bound)
+            temp_solution_ub = self._kepler_equation(value, e_upper_bound)
+            interval_solution = self._kepler_equation(value, interval)
+
+            if (temp_solution_lb * interval_solution) < 0 :
+                e_upper_bound = interval
+            else:
+                e_lower_bound = interval
+
+            if abs(temp_solution_lb - temp_solution_ub) < 10**-7:
+                solved = True
+
+        if not self.radians:
+            return np.rad2deg(e_lower_bound)
+
+        return e_lower_bound
 
     def __str__(self):
-        return f"a: {self.a}\nb: {self.b}\ne: {self.e}\nepsilon: {self.epsilon}"
-
-
+        return f"a: {self.a}\nb: {self.b}\nepsilon: {self.epsilon}"
 

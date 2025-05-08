@@ -6,13 +6,15 @@ from orbital_elements import OrbitalElements
 from math import pi
 
 
-def test_coordinates():
-    coords = Coordinates([[1, 2],[-1, 2],[-1, 2]])
-    coords.radians = True
-    print(coords.polar_coordinates)
-    coords.add_coordinate([2.23606798, 2.03444394], polar=True)
-    print(coords.coordinates)
+def test_ellipse():
+    ellipsis = Ellipse(5, 3)
+
+    ellipsis.radians = True
+    excentricity = ellipsis.excentric_anomaly(pi)
+    print(excentricity)
+
+
 
 
 if __name__ == "__main__":
-    test_coordinates()
+    test_ellipse()

@@ -15,6 +15,7 @@ Hier eine kleine Auflistung der vorhandenen Dokumente:
 - [Coordinates](./documentation/coordinates.md)
 - [OrbitalElements](./documentation/orbital_elements.md)
 - [Ellipse](./documentation/shapes.md)
+- [Planets](./documentation/planets.md)
 
 ## Fehlermeldungen
 Alle Methoden sind möglichst intuitiv gehalten und geben bei einer

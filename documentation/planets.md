@@ -8,7 +8,6 @@ Verzeichnis ablegen muss:
 - astrodate.py
 - orbital_elements.py
 - orbital_elements.json
--
 
 Um die Klasse zu nutzen, benötigt man sowohl die Klasse selbst als auch Pythons __datetime__ Bibliothek [s. Einführung](introduction.md):
 
